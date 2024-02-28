@@ -4,17 +4,17 @@ FROM node:${NODE_VERSION}-slim as base
 
 ENV NODE_ENV=development
 
-WORKDIR /src
+WORKDIR /src/frontend
 
 # Build
 FROM base as build
 
-COPY --link package.json yarn.lock .
+COPY --link frontend/package.json frontend/yarn.lock .
 RUN yarn install
 
 # Run
 FROM base
 
-COPY --from=build /src/node_modules /src/node_modules
+COPY --from=build /src/frontend/node_modules /src/frontend/node_modules
 
 CMD [ "yarn", "dev" ]

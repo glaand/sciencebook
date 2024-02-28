@@ -4,6 +4,8 @@ volumes:
   node_modules:
 services:
   frontend:
+    env_file:
+      - .env
     build:
       context: .
     ports:
@@ -11,4 +13,4 @@ services:
       - "24678:24678"
     volumes:
       - .:/src
-      - node_modules:/src/node_modules
+      - node_modules:/src/frontend/node_modules
