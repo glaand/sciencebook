@@ -45,7 +45,7 @@ export const usePageStore = defineStore('pageStore', () => {
     const newPage = async () => {
         const { data, error } = await client
             .from('pages')
-            .insert({ title: 'New Page', content: '' });
+            .insert({ title: 'New Page', content: '', user_id: user.value.id });
         if (error) {
             console.error('Error creating page', error);
         } else {
