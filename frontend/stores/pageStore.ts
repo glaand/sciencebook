@@ -1,5 +1,6 @@
 export const usePageStore = defineStore('pageStore', () => {
     const client = useSupabaseClient();
+    const user = useSupabaseUser();
     const currentPage = ref(null);
     const pages = ref([]);
     const setCurrentPage = async (page) => {
@@ -15,7 +16,11 @@ export const usePageStore = defineStore('pageStore', () => {
         }
     };
     const fetchPages = async () => {
-        const { data, error } = await client.from('pages').select('id,title').order('id', { ascending: true });
+        const { data, error } = await client
+                .from('pages')
+                .select('id,title')
+                .eq('user_id', user.value.id)
+                .order('id', { ascending: true });
         if (error) {
             console.error('Error loading pages', error);
         } else {
