@@ -6,7 +6,7 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase', 
     '@pinia/nuxt',
     'nuxt-icon',
-    'nuxt-lodash',
+    'nuxt-lodash'
   ],
   pinia: {
     autoImports: [

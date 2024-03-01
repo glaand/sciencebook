@@ -4,6 +4,9 @@
         <div class="drawer-content flex flex-col px-4 h-screen">
             <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden mb-4">Open drawer</label>
             <page v-if="currentPage" />
+            <div v-else class="flex items-center justify-center h-full">
+                <h2>Please select left a page</h2>
+            </div>
         </div> 
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label> 

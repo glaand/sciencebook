@@ -17,10 +17,10 @@ export const usePageStore = defineStore('pageStore', () => {
     };
     const fetchPages = async () => {
         const { data, error } = await client
-                .from('pages')
-                .select('id,title')
-                .eq('user_id', user.value.id)
-                .order('id', { ascending: true });
+            .from('pages')
+            .select('id,title')
+            .eq('user_id', user.value.id)
+            .order('id', { ascending: true });
         if (error) {
             console.error('Error loading pages', error);
         } else {
@@ -30,9 +30,9 @@ export const usePageStore = defineStore('pageStore', () => {
     const updatePage = async () => {
         const { data, error } = await client
             .from('pages')
-            .update({ 
+            .update({
                 title: currentPage.value.title,
-                content: currentPage.value.content 
+                content: currentPage.value.content
             })
             .eq('id', currentPage.value.id);
         if (error) {
@@ -67,9 +67,50 @@ export const usePageStore = defineStore('pageStore', () => {
                 setCurrentPage(pages.value[pages.value.length - 1]);
             } else {
                 currentPage.value = null;
-            
+
             }
         }
+    }
+
+    function stripHtml(html) {
+        let tmp = document.createElement("DIV");
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || "";
+    }
+
+    const getAllWords = async () => {
+        const words = [];
+        const { data, error } = await client
+            .from('pages')
+            .select('content')
+            .eq('user_id', user.value.id)
+            .order('id', { ascending: true });
+        if (error) {
+            console.error('Error loading pages', error);
+        } else {
+            for (let i = 0; i < data.length; i++) {
+                let content = stripHtml(data[i].content);
+                console.log(content);
+                words.push(content.split(' '));
+            }
+        }
+        // count each word in words and create a list of words with their count
+        let wordCount = {};
+        for (let i = 0; i < words.length; i++) {
+            for (let j = 0; j < words[i].length; j++) {
+                let word = words[i][j].toLowerCase();
+                if (wordCount[word] === undefined) {
+                    wordCount[word] = 1;
+                } else {
+                    wordCount[word]++;
+                }
+            }
+        }
+        let sortable = [];
+        for (let word in wordCount) {
+            sortable.push([word, wordCount[word]]);
+        }
+        return sortable;
     }
 
     return {
@@ -79,6 +120,7 @@ export const usePageStore = defineStore('pageStore', () => {
         fetchPages,
         updatePage,
         newPage,
-        deletePage
+        deletePage,
+        getAllWords
     }
 });
