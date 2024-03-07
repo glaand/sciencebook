@@ -6,7 +6,8 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase', 
     '@pinia/nuxt',
     'nuxt-icon',
-    'nuxt-lodash'
+    'nuxt-lodash',
+    'nuxt-chatgpt'
   ],
   pinia: {
     autoImports: [
@@ -21,4 +22,7 @@ export default defineNuxtConfig({
     },
   },
   ssr: false,
+  chatgpt: {
+    apiKey: process.env.CHATGPT_API_KEY,
+  }
 })

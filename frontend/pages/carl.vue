@@ -31,7 +31,7 @@
             Anakin
             <time class="text-xs opacity-50">12:46</time>
             </div>
-            <div class="chat-bubble">I hate you!</div>
+            <div class="chat-bubble">{{ data }}</div>
             <div class="chat-footer opacity-50">Seen at 12:46</div>
         </div>
     </div>
@@ -40,3 +40,11 @@
     </div>
   </div>
 </template>
+
+<script>
+const { chat } = useChatgpt();
+
+const data = ref("asdasd");
+
+data.value = await chat("hello there", 'gpt-3.5-turbo');
+</script>
