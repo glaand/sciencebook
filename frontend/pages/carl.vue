@@ -35,5 +35,8 @@
             <div class="chat-footer opacity-50">Seen at 12:46</div>
         </div>
     </div>
+    <div class="flex w-full absolute bottom-0 justify-center mb-10">
+        <chatbar />
+    </div>
   </div>
 </template>
