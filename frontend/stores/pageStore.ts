@@ -25,6 +25,9 @@ export const usePageStore = defineStore('pageStore', () => {
             console.error('Error loading pages', error);
         } else {
             pages.value = data;
+            if (pages.value.length > 0 && currentPage.value === null) {
+                setCurrentPage(pages.value[pages.value.length - 1]);
+            }
         }
     }
     const updatePage = async () => {

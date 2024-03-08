@@ -1,50 +1,23 @@
 <template>
   <div>
-    <navbar />
-    <div class="px-5">
-        <div class="chat chat-start">
-            <div class="chat-image avatar">
-            <div class="w-10 rounded-full">
-                <img
-                alt="Tailwind CSS chat bubble component"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                />
+    <navbar class="fixed top-0 z-50 w-screen" />
+    <div class="h-screen flex flex-col">
+        <div class="h-5/6 px-5 mt-20 overflow-auto">
+            <div v-for="chat in chats" :key="chat.id" :class="'flex chat chat-' + (chat.sender == 'C.A.R.L' ? 'start' : 'end justify-end')">
+                <div v-if="chat.loading" class="chat-bubble loading">
+                    <div class="animate-pulse">Loading...</div>
+                </div>
+                <div v-else :class="'text-xs chat-bubble ' + (chat.sender == 'C.A.R.L' ? 'chat-bubble-primary' : '')" v-html="chat.message"></div>
             </div>
-            </div>
-            <div class="chat-header">
-            Obi-Wan Kenobi
-            <time class="text-xs opacity-50">12:45</time>
-            </div>
-            <div class="chat-bubble">You were the Chosen One!</div>
-            <div class="chat-footer opacity-50">Delivered</div>
         </div>
-        <div class="chat chat-end">
-            <div class="chat-image avatar">
-            <div class="w-10 rounded-full">
-                <img
-                alt="Tailwind CSS chat bubble component"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                />
-            </div>
-            </div>
-            <div class="chat-header">
-            Anakin
-            <time class="text-xs opacity-50">12:46</time>
-            </div>
-            <div class="chat-bubble">{{ data }}</div>
-            <div class="chat-footer opacity-50">Seen at 12:46</div>
+        <div class="h-1/6">
+            <chatbar />
         </div>
-    </div>
-    <div class="flex w-full absolute bottom-0 justify-center mb-10">
-        <chatbar />
     </div>
   </div>
 </template>
 
-<script>
-const { chat } = useChatgpt();
-
-const data = ref("asdasd");
-
-data.value = await chat("hello there", 'gpt-3.5-turbo');
+<script setup>
+const chatStore = useChatStore();
+const { chats } = storeToRefs(chatStore);
 </script>
