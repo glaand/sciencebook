@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'nuxt-icon',
     'nuxt-lodash',
+    '@nuxt/test-utils/module'
   ],
   pinia: {
     autoImports: [

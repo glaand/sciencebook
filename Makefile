@@ -13,5 +13,8 @@ down:
 logs:
 	docker compose logs -f
 
+test:
+	docker compose exec frontend yarn test
+
 shell:
 	docker compose exec frontend bash
