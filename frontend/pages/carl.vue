@@ -7,7 +7,7 @@
                 <div v-if="chat.loading" class="chat-bubble loading">
                     <div class="animate-pulse">Loading...</div>
                 </div>
-                <div v-else :class="'text-xs chat-bubble ' + (chat.sender == 'C.A.R.L' ? 'chat-bubble-primary' : '')" v-html="chat.message"></div>
+                <div v-else :class="'text-sm chat-bubble ' + (chat.sender == 'C.A.R.L' ? 'chat-bubble-primary' : '')" v-html="chat.message"></div>
             </div>
         </div>
         <div class="h-1/6">
