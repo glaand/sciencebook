@@ -22,12 +22,12 @@
                         <input type="checkbox" checked="checked" class="checkbox checkbox-primary ml-3" v-model="autosave"/>
                     </label>
                 </div>
-            </div>
-            <div class="form-control">
-                <label class="label cursor-pointer">
-                    <span class="label-text">Speech to text?</span> 
-                    <input type="checkbox" checked="checked" class="checkbox checkbox-primary ml-3" v-model="speechToText"/>
-                </label>
+                <div class="form-control">
+                    <label class="label cursor-pointer">
+                        <span class="label-text">Speech to text?</span> 
+                        <input type="checkbox" checked="checked" class="checkbox checkbox-primary ml-3" v-model="speechToText"/>
+                    </label>
+                </div>
             </div>
         </h1>
         <quill-editor ref="quill" theme="snow" :content="currentPage.content" v-model:content="currentPage.content" contentType="html" @textChange="onAutoSave"></quill-editor>
