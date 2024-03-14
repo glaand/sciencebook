@@ -34,7 +34,7 @@ const showDrawer = ref(false);
 
 const newPage = async () => {
     await pageStore.newPage();
-    show('New page created', 'success');
+    show('New page created', 'info');
     showDrawer.value = false;
 };
 

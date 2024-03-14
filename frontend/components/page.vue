@@ -23,6 +23,12 @@
                     </label>
                 </div>
             </div>
+            <div class="form-control">
+                <label class="label cursor-pointer">
+                    <span class="label-text">Speech to text?</span> 
+                    <input type="checkbox" checked="checked" class="checkbox checkbox-primary ml-3" v-model="speechToText"/>
+                </label>
+            </div>
         </h1>
         <quill-editor ref="quill" theme="snow" :content="currentPage.content" v-model:content="currentPage.content" contentType="html" @textChange="onAutoSave"></quill-editor>
     </div>
@@ -36,6 +42,7 @@ const { currentPage } = storeToRefs(pageStore);
 const quill = ref(null);
 const isSaving = ref(false);
 const autosave = ref(false);
+const speechToText = ref(false);
 
 const savePage = async () => {
     isSaving.value = true;
@@ -64,6 +71,83 @@ const onAutoSave = () => {
 watch(currentPage, (newPage, oldPage) => {
     if (newPage.content !== oldPage.content) {
         quill.value.setContents(newPage.content || '');
+    }
+});
+
+import OpenAI from "openai";
+
+const config = useRuntimeConfig()
+const openai = new OpenAI({
+    apiKey: config.public.openApiKey,
+    dangerouslyAllowBrowser: true
+});
+
+const stream = ref(null);
+const recorder = ref(null);
+const interval = ref(null);
+const audioChunks = ref([]);
+
+async function startRecording() {
+    try {
+        console.log('Starting recording...');
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const recorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+
+        recorder.ondataavailable = e => {
+            audioChunks.value.push(e.data);
+        };
+
+        recorder.start(2000); // Start recording
+
+        // Set a timeout to stop recording after 5 seconds
+        setTimeout(() => {
+            console.log('Stopping recording...');
+            if (recorder.state !== 'inactive') {
+                recorder.stop();
+                processAudioChunks();
+            }
+        }, 5000);
+    } catch (error) {
+        console.error('Error starting recording:', error);
+    }
+}
+
+async function processAudioChunks() {
+    try {
+        if (audioChunks.value.length > 0) {
+            console.log('Sending accumulated audio chunks to OpenAI:', audioChunks.value);
+            await sendAudioToOpenAI(audioChunks.value); // Send accumulated audio chunks to OpenAI for transcription
+            audioChunks.value = []; // Clear the accumulated chunks
+        }
+    } catch (error) {
+        console.error('Error processing audio chunks:', error);
+    }
+}
+
+async function sendAudioToOpenAI(chunks) {
+    // Combine all chunks into a single buffer
+    const buffer = new Blob(chunks, { type: 'audio/webm' });
+
+    // Send audio to OpenAI for transcription
+    const transcription = await openai.audio.transcriptions.create({
+        file: await OpenAI.toFile(buffer, 'audio.webm', {
+            contentType: 'audio/webm'
+        }),
+        model: "whisper-1",
+    });
+
+    const newContent = quill.value.getContents() + `<p>${transcription.text}</p>`
+    quill.value.pasteHTML(newContent);
+}
+
+watch(() => speechToText.value, async (newVal) => {
+    if (newVal) {
+        // Start recording periodically
+        interval.value = setInterval(startRecording, 6000); // Every 6 seconds
+        startRecording(); // Start recording immediately
+    } else {
+        console.log('Stopping recording...');
+        clearInterval(interval.value);
     }
 });
 
