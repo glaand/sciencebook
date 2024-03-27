@@ -1,12 +1,12 @@
 describe('template spec', () => {
     it('Open website', () => {
-        cy.visit('https://sciencebook.vercel.app/')
+        cy.visit('http://localhost:3000/')
     })
 
     /* ==== Test Created with Cypress Studio ==== */
     it('Login and welcome message', function() {
         /* ==== Generated with Cypress Studio ==== */
-        cy.visit('https://sciencebook.vercel.app/');
+        cy.visit('http://localhost:3000/');
         cy.get(':nth-child(1) > .grow').clear('f');
         cy.get(':nth-child(1) > .grow').type('fhgr@fhgr.ch');
         cy.get('.my-3 > .grow').clear();
