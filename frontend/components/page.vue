@@ -26,6 +26,7 @@
                     <label class="label cursor-pointer">
                         <span class="label-text">Speech to text?</span> 
                         <input type="checkbox" checked="checked" class="checkbox checkbox-primary ml-3" v-model="speechToText"/>
+                        <AVMedia class="ml-3" v-if="stream" :media="stream" type="wform" :canv-height="20" line-color="#3b82f6"></AVMedia>
                     </label>
                 </div>
             </div>
@@ -36,6 +37,8 @@
 
 <script setup lang="ts">
 import useToast from '~/composables/toast';
+import { AVMedia } from 'vue-audio-visual';
+
 const { show } = useToast();
 const pageStore = usePageStore();
 const { currentPage } = storeToRefs(pageStore);
@@ -90,20 +93,20 @@ const audioChunks = ref([]);
 async function startRecording() {
     try {
         console.log('Starting recording...');
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const recorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+        stream.value = await navigator.mediaDevices.getUserMedia({ audio: true });
+        recorder.value = new MediaRecorder(stream.value, { mimeType: 'audio/webm' });
 
-        recorder.ondataavailable = e => {
+        recorder.value.ondataavailable = e => {
             audioChunks.value.push(e.data);
         };
 
-        recorder.start(2000); // Start recording
+        recorder.value.start(2000); // Start recording
 
         // Set a timeout to stop recording after 5 seconds
         setTimeout(() => {
             console.log('Stopping recording...');
-            if (recorder.state !== 'inactive') {
-                recorder.stop();
+            if (recorder.value.state !== 'inactive') {
+                recorder.value.stop();
                 processAudioChunks();
             }
         }, 5000);
@@ -147,6 +150,9 @@ watch(() => speechToText.value, async (newVal) => {
         startRecording(); // Start recording immediately
     } else {
         console.log('Stopping recording...');
+        recorder.value.stop();
+        stream.value = null;
+        recorder.value = null;
         clearInterval(interval.value);
     }
 });

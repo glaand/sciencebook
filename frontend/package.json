@@ -34,9 +34,11 @@
     "@nuxtjs/supabase": "^1.1.6",
     "@pinia/nuxt": "^0.5.1",
     "@vueup/vue-quill": "^1.2.0",
+    "@vueuse/core": "^10.9.0",
     "jsdom": "^24.0.0",
     "openai": "^4.28.4",
     "pinia": "^2.1.7",
+    "vue-audio-visual": "^3.0.7",
     "wordcloud": "^1.2.2"
   }
 }
