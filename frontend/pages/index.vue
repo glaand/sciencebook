@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="min-h-screen">
         <navbar />
         <div class="flex flex-col items-center justify-center container mx-auto gap-3 p-4 mt-10 text-center">
             <h1 class="text-4xl font-bold">Welcome to Sciencebook👋</h1>

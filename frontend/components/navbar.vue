@@ -16,10 +16,15 @@
                 </div>
             </div>
             <div class="navbar-center">
-                <a class="btn btn-ghost text-xl" @click="() => navigateTo('/')"><Icon name="mdi:academic-cap" class="h-8 w-8 text-blue-500 mr-2" /> Sciencebook</a>
+                <a class="btn btn-ghost text-xl" @click="() => navigateTo('/')"><Icon name="mdi:academic-cap" class="h-8 w-8 text-base-500 mr-2" /> Sciencebook</a>
             </div>
             <div class="navbar-end">
-
+                <select v-model="theme" class="select select-primary md:w-full md:max-w-xs">
+                    <option disabled selected>Select Theme</option>
+                    <option v-for="theme in themes" :value="theme" :key="theme">
+                        <span class="uppercase">{{ theme }}</span>
+                    </option>
+                </select>
             </div>
         </div>
     </div>
@@ -28,6 +33,9 @@
 <script setup>
 const supabase = useSupabaseClient()
 const router = useRouter()
+
+const themeStore = useThemeStore()
+const { theme, themes } = storeToRefs(themeStore)
 
 const logout = async () => {
     await supabase.auth.signOut()

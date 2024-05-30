@@ -10,12 +10,12 @@
         </div> 
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label> 
-            <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-                <button class="btn btn-block btn-outline btn-info btn-sm" @click="() => newPage()">
+            <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content justify-start">
+                <button class="btn btn-block btn-outline text-base-content justify-start" @click="() => newPage()">
                     <Icon name="f7:plus-app" class="h-5 w-5" /> New page
                 </button>
                 <!-- Sidebar content here -->
-                <li v-for="page in pages"><button :class="['btn btn-xs', currentPage && page.id == currentPage.id ? 'btn-active' : '']" @click="() => openPage(page)">{{ page.title }}</button></li>
+                <button v-for="page in pages" :class="['btn justify-start my-2', currentPage && page.id == currentPage.id ? 'btn-active' : '']" @click="() => openPage(page)">{{ page.title }}</button>
             </ul>
         </div>
     </div>

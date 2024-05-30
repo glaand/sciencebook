@@ -24,7 +24,7 @@ const resizeHandler = async () => {
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
   const words = await pageStore.getAllWords();
-  WordCloud(ctx, { list: words, weightFactor: 40, origin: [0, 0]});
+  WordCloud(ctx, { list: words, weightFactor: 40, origin: [0, 0], backgroundColor: getComputedStyle(document.querySelector('.navbar')).backgroundColor});
 };
 
 onMounted(() => {
