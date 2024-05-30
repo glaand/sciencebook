@@ -44,7 +44,7 @@ const pageStore = usePageStore();
 const { currentPage } = storeToRefs(pageStore);
 const quill = ref(null);
 const isSaving = ref(false);
-const autosave = ref(false);
+const autosave = ref(true);
 const speechToText = ref(false);
 
 const savePage = async () => {
