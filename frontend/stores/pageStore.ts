@@ -140,22 +140,24 @@ export const usePageStore = defineStore('pageStore', () => {
                 const strippedContent = stripHtml(data[i].content);
 
                 if (strippedContent.length < 200) {
-                    continue;
+                    botMessage = strippedContent;
                 }
-               
-                const stream = await openai.chat.completions.create({
-                    model: "gpt-3.5-turbo",
-                    messages: [
-                        { role: "system", content: "Please summarise the following text maximum 100 words. start with your note is about..."},
-                        { role: "user", content: strippedContent.substring(0,10000) }
-                    ],
-                    stream: true,
-                });
-                
-                for await (const chunk of stream) {
-                    // add content of chunk to botMessage
-                    botMessage += chunk.choices[0]?.delta?.content || "";
+                else {
+                    const stream = await openai.chat.completions.create({
+                        model: "gpt-3.5-turbo",
+                        messages: [
+                            { role: "system", content: "Please summarise the following text maximum 100 words. start with your note is about..."},
+                            { role: "user", content: strippedContent.substring(0,10000) }
+                        ],
+                        stream: true,
+                    });
+                    
+                    for await (const chunk of stream) {
+                        // add content of chunk to botMessage
+                        botMessage += chunk.choices[0]?.delta?.content || "";
+                    }
                 }
+            
 
                 timeline.push({
                     createdAt: data[i].created_at,
