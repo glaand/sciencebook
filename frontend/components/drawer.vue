@@ -23,7 +23,6 @@
 
 <script setup lang="ts">
 import useToast from '~/composables/toast';
-import { usePageStore } from '~/stores/pageStore';
 const pageStore = usePageStore();
 
 const { show } = useToast();
