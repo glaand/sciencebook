@@ -53,7 +53,7 @@
         <div class="flex flex-col items-center justify-center container mx-auto gap-3 p-4 mt-10 text-center">
             <h1 class="text-4xl font-bold">Themes</h1>
             <p class="text-lg">Choose your favorite theme</p>
-            <select v-model="theme" class="select select-primary md:w-full md:max-w-xs hidden md:block">
+            <select v-model="theme" class="select select-primary md:w-full md:max-w-xs">
                 <option disabled selected>Select Theme</option>
                 <option v-for="theme in themes" :value="theme" :key="theme">
                     <span class="uppercase">{{ theme }}</span>
